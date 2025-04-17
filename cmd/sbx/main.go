@@ -74,7 +74,10 @@ func main() {
 		Name:  "sbx",
 		Flags: sliceutil.Map(flags, func(flag *cli.StringFlag) cli.Flag { return flag }),
 		Action: func(ctx context.Context, cmd *cli.Command) error {
-			var operations []*sbpl.Operation
+			var (
+				operations       []*sbpl.Operation
+				isNetworkAllowed = false
+			)
 			for _, flag := range flags {
 				if !flag.IsSet() {
 					continue
@@ -105,6 +108,7 @@ func main() {
 					case sbpl.OperationTypeFileAll, sbpl.OperationTypeFileRead, sbpl.OperationTypeFileWrite:
 						return sbpl.NewSubpathPathFilter(v)
 					case sbpl.OperationTypeNetworkAll, sbpl.OperationTypeNetworkInbound, sbpl.OperationTypeNetworkOutbound:
+						isNetworkAllowed = true
 						return sbpl.NewNetworkFilter(
 							false,                        // support only remote
 							sbpl.NetworkFilterProtocolIP, // support only ip
@@ -137,7 +141,7 @@ func main() {
 					sbpl.NewLiteralPathFilter(commandPath),
 				},
 			})
-			policy := sbpl.NewPolicy(operations).String()
+			policy := sbpl.NewPolicy(isNetworkAllowed, operations).String()
 			return sandboxExec(ctx, policy, commandPath, cmd.Args().Tail()...)
 		},
 	}

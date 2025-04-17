@@ -39,7 +39,7 @@ func NewLiteralPathFilter(path string) Filter {
 func NewSubpathPathFilter(path string) (Filter, error) {
 	if strings.HasPrefix(path, "/") {
 		return &PathFilter{
-			Type: PathFilterTypeLiteral,
+			Type: PathFilterTypeSubpath,
 			Path: path,
 		}, nil
 	}
