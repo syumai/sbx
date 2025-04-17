@@ -2,28 +2,30 @@ package sbpl
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/syumai/sbx/internal/sliceutil"
 )
 
-func NewNetworkFilterAddress(host string, port int) (*NetworkFilterAddress, error) {
+func NewNetworkFilterAddress(host string, port string) (*NetworkFilterAddress, error) {
 	if host != "*" && host != "localhost" {
 		return nil, fmt.Errorf("invalid host: %s", host)
 	}
-	if port < 0 || port > 65535 {
-		return nil, fmt.Errorf("invalid port: %d", port)
+	portNum, _ := strconv.Atoi(port)
+	if port != "*" && (portNum < 0 || portNum > 65535) {
+		return nil, fmt.Errorf("invalid port: %s", port)
 	}
 	return &NetworkFilterAddress{Host: host, Port: port}, nil
 }
 
 type NetworkFilterAddress struct {
 	Host string
-	Port int
+	Port string
 }
 
 func (a *NetworkFilterAddress) String() string {
-	return fmt.Sprintf(`"%s:%d"`, a.Host, a.Port)
+	return fmt.Sprintf(`"%s:%s"`, a.Host, a.Port)
 }
 
 func NewNetworkFilter(isLocal bool, protocol NetworkFilterProtocol, addresses []*NetworkFilterAddress) *NetworkFilter {

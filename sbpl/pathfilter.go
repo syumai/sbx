@@ -27,7 +27,7 @@ func (f *PathFilter) String() string {
 	panic(fmt.Sprintf("unexpected path filter type: %d", f.Type))
 }
 
-func NewFilePathFilter(path string) Filter {
+func NewPathFilter(path string) Filter {
 	return &PathFilter{
 		Type: PathFilterTypeSubpath,
 		Path: path,

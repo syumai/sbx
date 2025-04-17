@@ -10,6 +10,18 @@ func Map[T any, R any](s []T, f func(T) R) []R {
 	return r
 }
 
+func MapWithError[T any, R any](s []T, f func(T) (R, error)) ([]R, error) {
+	r := make([]R, len(s))
+	var err error
+	for i, v := range s {
+		r[i], err = f(v)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return r, nil
+}
+
 func MapStringer[T fmt.Stringer](s []T) []string {
 	return Map(s, func(t T) string { return t.String() })
 }
