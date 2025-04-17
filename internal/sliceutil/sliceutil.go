@@ -25,3 +25,13 @@ func MapWithError[T any, R any](s []T, f func(T) (R, error)) ([]R, error) {
 func MapStringer[T fmt.Stringer](s []T) []string {
 	return Map(s, func(t T) string { return t.String() })
 }
+
+func Filter[T any](s []T, f func(T) bool) []T {
+	r := make([]T, 0, len(s))
+	for _, v := range s {
+		if f(v) {
+			r = append(r, v)
+		}
+	}
+	return r
+}

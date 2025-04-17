@@ -19,7 +19,10 @@ func (o *Operation) String() string {
 	if !o.Allowed {
 		allowed = "deny"
 	}
-	body := []string{allowed, o.Type.String(), filters}
+	body := []string{allowed, o.Type.String()}
+	if filters != "" {
+		body = append(body, filters)
+	}
 	if o.Type == OperationTypeProcessExecNoSandbox {
 		body = append(body, "(with no-sandbox)")
 	}
