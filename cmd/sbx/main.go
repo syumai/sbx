@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 
 	"github.com/syumai/sbx/internal/sliceutil"
@@ -102,7 +103,7 @@ func main() {
 				filters := sliceutil.Map(values, func(v string) sbpl.Filter {
 					switch operationType {
 					case sbpl.OperationTypeFileAll, sbpl.OperationTypeFileRead, sbpl.OperationTypeFileWrite:
-						return sbpl.NewPathFilter(v)
+						return sbpl.NewSubpathPathFilter(v)
 					case sbpl.OperationTypeNetworkAll, sbpl.OperationTypeNetworkInbound, sbpl.OperationTypeNetworkOutbound:
 						return sbpl.NewNetworkFilter(
 							false,                        // support only remote
@@ -110,7 +111,7 @@ func main() {
 							addressFilters,
 						)
 					case sbpl.OperationTypeProcessExec, sbpl.OperationTypeProcessExecNoSandbox:
-						return sbpl.NewPathFilter(v)
+						return sbpl.NewLiteralPathFilter(v)
 					default:
 						panic(fmt.Sprintf("unexpected operation type: %s", operationType))
 					}
@@ -121,9 +122,20 @@ func main() {
 					Filters: filters,
 				})
 			}
+			command := cmd.Args().First()
+			commandPath, err := exec.LookPath(command)
+			if err != nil {
+				return fmt.Errorf("command not found: %s", command)
+			}
+			operations = append(operations, &sbpl.Operation{
+				Type:    sbpl.OperationTypeProcessExec,
+				Allowed: true,
+				Filters: []sbpl.Filter{
+					sbpl.NewLiteralPathFilter(commandPath),
+				},
+			})
 			policy := sbpl.NewPolicy(operations).String()
-			fmt.Println(policy)
-			return nil
+			return sandboxExec(ctx, policy, commandPath, cmd.Args().Tail()...)
 		},
 	}
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
