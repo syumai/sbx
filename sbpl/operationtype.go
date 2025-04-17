@@ -6,10 +6,10 @@ type OperationType int
 
 const (
 	OperationTypeUnknown OperationType = iota
-	OperationTypeFileAll
+	OperationTypeFile
 	OperationTypeFileRead
 	OperationTypeFileWrite
-	OperationTypeNetworkAll
+	OperationTypeNetwork
 	OperationTypeNetworkInbound
 	OperationTypeNetworkOutbound
 	OperationTypeProcessExec
@@ -19,13 +19,13 @@ const (
 
 func (t OperationType) String() string {
 	switch t {
-	case OperationTypeFileAll:
+	case OperationTypeFile:
 		return "file*"
 	case OperationTypeFileRead:
 		return "file-read*"
 	case OperationTypeFileWrite:
 		return "file-write*"
-	case OperationTypeNetworkAll:
+	case OperationTypeNetwork:
 		return "network*"
 	case OperationTypeNetworkInbound:
 		return "network-inbound"

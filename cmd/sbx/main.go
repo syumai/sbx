@@ -33,14 +33,14 @@ const (
 )
 
 var operationTypeByFlagMap = map[string]sbpl.OperationType{
-	flagAllowFile:            sbpl.OperationTypeFileAll,
-	flagDenyFile:             sbpl.OperationTypeFileAll,
+	flagAllowFile:            sbpl.OperationTypeFile,
+	flagDenyFile:             sbpl.OperationTypeFile,
 	flagAllowFileRead:        sbpl.OperationTypeFileRead,
 	flagDenyFileRead:         sbpl.OperationTypeFileRead,
 	flagAllowFileWrite:       sbpl.OperationTypeFileWrite,
 	flagDenyFileWrite:        sbpl.OperationTypeFileWrite,
-	flagAllowNetwork:         sbpl.OperationTypeNetworkAll,
-	flagDenyNetwork:          sbpl.OperationTypeNetworkAll,
+	flagAllowNetwork:         sbpl.OperationTypeNetwork,
+	flagDenyNetwork:          sbpl.OperationTypeNetwork,
 	flagAllowNetworkInbound:  sbpl.OperationTypeNetworkInbound,
 	flagDenyNetworkInbound:   sbpl.OperationTypeNetworkInbound,
 	flagAllowNetworkOutbound: sbpl.OperationTypeNetworkOutbound,
@@ -88,7 +88,7 @@ func main() {
 				values := strings.Split(value, ",")
 				addressFilters, err := func() ([]*sbpl.NetworkFilterAddress, error) {
 					switch operationType {
-					case sbpl.OperationTypeNetworkAll, sbpl.OperationTypeNetworkInbound, sbpl.OperationTypeNetworkOutbound:
+					case sbpl.OperationTypeNetwork, sbpl.OperationTypeNetworkInbound, sbpl.OperationTypeNetworkOutbound:
 						return sliceutil.MapWithError(values, func(v string) (*sbpl.NetworkFilterAddress, error) {
 							host, port, found := strings.Cut(v, ":")
 							if !found {
@@ -105,9 +105,9 @@ func main() {
 				}
 				filters, err := sliceutil.MapWithError(values, func(v string) (sbpl.Filter, error) {
 					switch operationType {
-					case sbpl.OperationTypeFileAll, sbpl.OperationTypeFileRead, sbpl.OperationTypeFileWrite:
+					case sbpl.OperationTypeFile, sbpl.OperationTypeFileRead, sbpl.OperationTypeFileWrite:
 						return sbpl.NewSubpathPathFilter(v)
-					case sbpl.OperationTypeNetworkAll, sbpl.OperationTypeNetworkInbound, sbpl.OperationTypeNetworkOutbound:
+					case sbpl.OperationTypeNetwork, sbpl.OperationTypeNetworkInbound, sbpl.OperationTypeNetworkOutbound:
 						isNetworkAllowed = true
 						return sbpl.NewNetworkFilter(
 							false,                        // support only remote
