@@ -22,9 +22,9 @@ func (t OperationType) String() string {
 	case OperationTypeFileAll:
 		return "file*"
 	case OperationTypeFileRead:
-		return "file-read"
+		return "file-read*"
 	case OperationTypeFileWrite:
-		return "file-write"
+		return "file-write*"
 	case OperationTypeNetworkAll:
 		return "network*"
 	case OperationTypeNetworkInbound:

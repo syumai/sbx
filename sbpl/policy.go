@@ -15,6 +15,7 @@ type Policy struct {
 
 func (p *Policy) String() string {
 	body := []string{"(version 1)"}
+	body = append(body, `(import "bsd.sb")`)
 	if p.Allowed {
 		body = append(body, "(allow default)")
 	} else {

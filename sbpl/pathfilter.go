@@ -2,6 +2,8 @@ package sbpl
 
 import (
 	"fmt"
+	"path/filepath"
+	"strings"
 )
 
 type PathFilterType int
@@ -34,9 +36,19 @@ func NewLiteralPathFilter(path string) Filter {
 	}
 }
 
-func NewSubpathPathFilter(path string) Filter {
+func NewSubpathPathFilter(path string) (Filter, error) {
+	if strings.HasPrefix(path, "/") {
+		return &PathFilter{
+			Type: PathFilterTypeLiteral,
+			Path: path,
+		}, nil
+	}
+	abs, err := filepath.Abs(path)
+	if err != nil {
+		return nil, err
+	}
 	return &PathFilter{
 		Type: PathFilterTypeSubpath,
-		Path: path,
-	}
+		Path: abs,
+	}, nil
 }

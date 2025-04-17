@@ -100,7 +100,7 @@ func main() {
 				if err != nil {
 					return err
 				}
-				filters := sliceutil.Map(values, func(v string) sbpl.Filter {
+				filters, err := sliceutil.MapWithError(values, func(v string) (sbpl.Filter, error) {
 					switch operationType {
 					case sbpl.OperationTypeFileAll, sbpl.OperationTypeFileRead, sbpl.OperationTypeFileWrite:
 						return sbpl.NewSubpathPathFilter(v)
@@ -109,13 +109,16 @@ func main() {
 							false,                        // support only remote
 							sbpl.NetworkFilterProtocolIP, // support only ip
 							addressFilters,
-						)
+						), nil
 					case sbpl.OperationTypeProcessExec, sbpl.OperationTypeProcessExecNoSandbox:
-						return sbpl.NewLiteralPathFilter(v)
+						return sbpl.NewLiteralPathFilter(v), nil
 					default:
 						panic(fmt.Sprintf("unexpected operation type: %s", operationType))
 					}
 				})
+				if err != nil {
+					return err
+				}
 				operations = append(operations, &sbpl.Operation{
 					Type:    operationType,
 					Allowed: allowed,
