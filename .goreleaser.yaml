@@ -1,31 +1,23 @@
 version: 2
 
 builds:
-  - main: ./cmd/sbx
-    binary: sbx
+  - id: sbx
+    no_unique_dist_dir: true
+    main: ./cmd/sbx
+    binary: sbx-{{ .Arch }}-{{ .Os }}
     goos:
       - linux
       - windows
       - darwin
+    goarch:
+      - amd64
+      - arm64
 
 archives:
-  - formats: [tar.gz]
-    # this name template makes the OS and Arch compatible with the results of `uname`.
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
-    # use zip for windows archives
-    format_overrides:
-      - goos: windows
-        formats: [zip]
+  - formats:
+      - binary
+    name_template: "{{ .Binary }}"
+    allow_different_binary_count: true
 
 changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
+  disable: true
