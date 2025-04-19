@@ -33,6 +33,7 @@ sbx [flags] <command> [args...]
 ### Flags
 
 - By default, `sbx` denies all operations.
+  - To allow all operations for investigation purposes, use the `--allow-all` flag.
 - You can allow operations by specifying the corresponding flags.
 - You can deny operations by specifying the corresponding flags with `deny-` prefix.
 - `-all` flags are boolean flags that allow / deny all operations for the corresponding operation type.
@@ -41,25 +42,47 @@ sbx [flags] <command> [args...]
   - only `ip` protocol.
   - only `localhost` or `*` for host.
 
-#### Allow Operations
-- `--allow-file-all`          Allow all file operations
-- `--allow-file-read`         Allow file read operations
-- `--allow-file-write`        Allow file write operations
-- `--allow-network-all`       Allow all network operations
-- `--allow-network-inbound`   Allow inbound network operations
-- `--allow-network-outbound`  Allow outbound network operations
-- `--allow-process-exec`      Allow process execution
-- `--allow-sysctl-read`       Allow sysctl read
+#### Special Flag
 
-#### Deny Operations
+- `--allow-all`               Allow all operations (without this flag, deny all operations by default)
+
+#### File Operations
+- `--allow-file`              Allow file operations
+- `--deny-file`               Deny file operations
+- `--allow-file-all`          Allow all file operations
 - `--deny-file-all`           Deny all file operations
+
+##### File Read Operations
+- `--allow-file-read`         Allow file read operations
 - `--deny-file-read`          Deny file read operations
+- `--allow-file-read-all`     Allow all file read operations
+- `--deny-file-read-all`      Deny all file read operations
+
+##### File Write Operations
+- `--allow-file-write`        Allow file write operations
 - `--deny-file-write`         Deny file write operations
+- `--allow-file-write-all`    Allow all file write operations
+- `--deny-file-write-all`     Deny all file write operations
+
+#### Network Operations
+- `--allow-network-all`       Allow all network operations
 - `--deny-network-all`        Deny all network operations
+- `--allow-network-inbound`   Allow inbound network operations
 - `--deny-network-inbound`    Deny inbound network operations
+- `--allow-network-outbound`  Allow outbound network operations
 - `--deny-network-outbound`   Deny outbound network operations
+
+#### Process Operations
+- `--allow-process-exec`      Allow process execution
 - `--deny-process-exec`       Deny process execution
+- `--allow-process-exec-all`  Allow all process execution
+- `--deny-process-exec-all`   Deny all process execution
+
+#### Sysctl Operations
+- `--allow-sysctl-read`       Allow sysctl read
 - `--deny-sysctl-read`        Deny sysctl read
+- `--allow-sysctl-read-all`   Allow all sysctl read
+- `--deny-sysctl-read-all`    Deny all sysctl read
 
 ### Example
 
