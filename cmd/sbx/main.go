@@ -48,8 +48,8 @@ const (
 var operationTypeByFlagMap = map[string]sbpl.OperationType{
 	flagAllowFile:    sbpl.OperationTypeFile,
 	flagDenyFile:     sbpl.OperationTypeFile,
-	flagAllowFileAll: sbpl.OperationTypeFileAll,
-	flagDenyFileAll:  sbpl.OperationTypeFileAll,
+	flagAllowFileAll: sbpl.OperationTypeFile,
+	flagDenyFileAll:  sbpl.OperationTypeFile,
 
 	flagAllowFileRead: sbpl.OperationTypeFileRead,
 	flagDenyFileRead:  sbpl.OperationTypeFileRead,
@@ -59,8 +59,8 @@ var operationTypeByFlagMap = map[string]sbpl.OperationType{
 
 	flagAllowNetwork:    sbpl.OperationTypeNetwork,
 	flagDenyNetwork:     sbpl.OperationTypeNetwork,
-	flagAllowNetworkAll: sbpl.OperationTypeNetworkAll,
-	flagDenyNetworkAll:  sbpl.OperationTypeNetworkAll,
+	flagAllowNetworkAll: sbpl.OperationTypeNetwork,
+	flagDenyNetworkAll:  sbpl.OperationTypeNetwork,
 
 	flagAllowNetworkInbound: sbpl.OperationTypeNetworkInbound,
 	flagDenyNetworkInbound:  sbpl.OperationTypeNetworkInbound,
@@ -70,8 +70,8 @@ var operationTypeByFlagMap = map[string]sbpl.OperationType{
 
 	flagAllowProcessExec:    sbpl.OperationTypeProcessExec,
 	flagDenyProcessExec:     sbpl.OperationTypeProcessExec,
-	flagAllowProcessExecAll: sbpl.OperationTypeProcessExecAll,
-	flagDenyProcessExecAll:  sbpl.OperationTypeProcessExecAll,
+	flagAllowProcessExecAll: sbpl.OperationTypeProcessExec,
+	flagDenyProcessExecAll:  sbpl.OperationTypeProcessExec,
 
 	flagAllowSysctlRead: sbpl.OperationTypeSysctlRead,
 	flagDenySysctlRead:  sbpl.OperationTypeSysctlRead,
@@ -124,6 +124,7 @@ func main() {
 				flagName := flag.Names()[0]
 				operationType := operationTypeByFlagMap[flagName]
 				allowed := strings.HasPrefix(flagName, "allow-")
+				withoutFilter := strings.HasSuffix(flagName, "-all")
 				value := cmd.String(flagName)
 				values := strings.Split(value, ",")
 				addressFilters, err := func() ([]*sbpl.NetworkFilterAddress, error) {
@@ -144,9 +145,10 @@ func main() {
 					return err
 				}
 				filters, err := sliceutil.MapWithError(values, func(v string) (sbpl.Filter, error) {
-					switch operationType {
-					case sbpl.OperationTypeFileAll, sbpl.OperationTypeNetworkAll, sbpl.OperationTypeProcessExecAll:
+					if withoutFilter {
 						return nil, nil
+					}
+					switch operationType {
 					case sbpl.OperationTypeFile, sbpl.OperationTypeFileRead, sbpl.OperationTypeFileWrite:
 						return sbpl.NewSubpathPathFilter(v)
 					case sbpl.OperationTypeNetwork, sbpl.OperationTypeNetworkInbound, sbpl.OperationTypeNetworkOutbound:
