@@ -24,6 +24,8 @@
 go install github.com/syumai/sbx/cmd/sbx@latest
 ```
 
+or download binary from [releases](https://github.com/syumai/sbx/releases) page.
+
 ## Usage
 
 ```
