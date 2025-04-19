@@ -6,30 +6,37 @@ import (
 	"github.com/syumai/sbx/internal/sliceutil"
 )
 
-func NewPolicy(isNetworkAllowed bool, operations []*Operation) *Policy {
+func NewPolicy(allowAllOperations bool, isNetworkAllowed bool, operations []*Operation) *Policy {
 	return &Policy{
-		IsNetworkAllowed: isNetworkAllowed,
-		Operations:       operations,
+		AllowAllOperations: allowAllOperations,
+		IsNetworkAllowed:   isNetworkAllowed,
+		Operations:         operations,
 	}
 }
 
 type Policy struct {
-	IsNetworkAllowed bool
-	Operations       []*Operation
+	AllowAllOperations bool
+	IsNetworkAllowed   bool
+	Operations         []*Operation
 }
 
 func (p *Policy) String() string {
 	body := []string{
 		"(version 1)",
 		`(import "bsd.sb")`,
-		"(deny default)",
-		// allow access to dylibs because it's required for process exec
+	}
+	if p.AllowAllOperations {
+		body = append(body, "(allow default)")
+	} else {
+		body = append(body, "(deny default)")
+	}
+	// allow access to dylibs because it's required for process exec
+	body = append(body,
 		`(allow file-read*
 	(subpath "/opt/local/lib")
 	(subpath "/usr/lib")
 	(subpath "/usr/local/lib")
-	)`,
-	}
+	)`)
 	if p.IsNetworkAllowed {
 		body = append(body,
 			// allow access to unix-socket when network is allowed
@@ -38,5 +45,4 @@ func (p *Policy) String() string {
 	}
 	body = append(body, sliceutil.MapStringer(p.Operations)...)
 	return strings.Join(body, "\n")
-
 }

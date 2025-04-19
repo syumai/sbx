@@ -13,6 +13,10 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
+// special flag
+const flagAllowAll = "allow-all"
+
+// operation flags
 const (
 	flagAllowFile    = "allow-file"
 	flagDenyFile     = "deny-file"
@@ -99,6 +103,8 @@ var operationTypeByFlagMap = map[string]sbpl.OperationType{
 
 func main() {
 	flags := []cli.Flag{
+		&cli.BoolFlag{Name: flagAllowAll, Aliases: []string{"A"}, Usage: "allow all operation"},
+
 		&cli.StringFlag{Name: flagAllowFile, Usage: "allow file* operation"},
 		&cli.StringFlag{Name: flagDenyFile, Usage: "deny file* operation"},
 		&cli.BoolFlag{Name: flagAllowFileAll, Usage: "allow all file* operation"},
@@ -145,14 +151,20 @@ func main() {
 		Flags: sliceutil.Map(flags, func(flag cli.Flag) cli.Flag { return flag }),
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			var (
-				operations       []*sbpl.Operation
-				isNetworkAllowed = false
+				allowAllOperations = false
+				operations         []*sbpl.Operation
+				isNetworkAllowed   = false
 			)
 			for _, flag := range flags {
 				if !flag.IsSet() {
 					continue
 				}
 				flagName := flag.Names()[0]
+				if flagName == flagAllowAll {
+					allowAllOperations = true
+					continue
+				}
+
 				operationType := operationTypeByFlagMap[flagName]
 				allowed := strings.HasPrefix(flagName, "allow-")
 				withoutFilter := strings.HasSuffix(flagName, "-all")
@@ -219,7 +231,7 @@ func main() {
 					sbpl.NewLiteralPathFilter(commandPath),
 				},
 			})
-			policy := sbpl.NewPolicy(isNetworkAllowed, operations).String()
+			policy := sbpl.NewPolicy(allowAllOperations, isNetworkAllowed, operations).String()
 			return sandboxExec(ctx, policy, commandPath, cmd.Args().Tail()...)
 		},
 	}
