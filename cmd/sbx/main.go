@@ -148,6 +148,16 @@ func main() {
 
 	cmd := &cli.Command{
 		Name:  "sbx",
+		Usage: "a tool for running commands with macOS sandbox-exec policies",
+		UsageText: `sbx [flags] <command> [command-args...]
+sbx [flags] -- <command> [command-flags] [command-args...]
+Example:
+	sbx --allow-file-read ./foo ls ./foo
+	# same as above
+	sbx --allow-file-read='./foo' ls ./foo
+
+	# with command flags
+	sbx --allow-file-read='./foo' -- ls -l ./foo`,
 		Flags: sliceutil.Map(flags, func(flag cli.Flag) cli.Flag { return flag }),
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			var (
@@ -222,7 +232,7 @@ func main() {
 			command := cmd.Args().First()
 			commandPath, err := exec.LookPath(command)
 			if err != nil {
-				return fmt.Errorf("command not found: %s", command)
+				return cli.ShowAppHelp(cmd)
 			}
 			operations = append(operations, &sbpl.Operation{
 				Type:    sbpl.OperationTypeProcessExec,

@@ -27,7 +27,8 @@ go install github.com/syumai/sbx/cmd/sbx@latest
 ## Usage
 
 ```
-sbx [flags] <command> [args...]
+sbx [flags] <command> [command-args...]
+sbx [flags] -- <command> [command-flags] [command-args...]
 ```
 
 ### Flags
