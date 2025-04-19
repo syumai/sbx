@@ -7,16 +7,16 @@ type OperationType int
 const (
 	OperationTypeUnknown OperationType = iota
 	OperationTypeFile
+	OperationTypeFileAll
 	OperationTypeFileRead
 	OperationTypeFileWrite
-	OperationTypeFileAll
 	OperationTypeNetwork
+	OperationTypeNetworkAll
 	OperationTypeNetworkInbound
 	OperationTypeNetworkOutbound
-	OperationTypeNetworkAll
 	OperationTypeProcessExec
-	OperationTypeProcessExecNoSandbox
 	OperationTypeProcessExecAll
+	OperationTypeProcessExecNoSandbox
 	OperationTypeSysctlRead
 )
 
