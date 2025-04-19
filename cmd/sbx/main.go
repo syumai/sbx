@@ -19,30 +19,40 @@ const (
 	flagAllowFileAll = "allow-file-all"
 	flagDenyFileAll  = "deny-file-all"
 
-	flagAllowFileRead = "allow-file-read"
-	flagDenyFileRead  = "deny-file-read"
+	flagAllowFileRead    = "allow-file-read"
+	flagDenyFileRead     = "deny-file-read"
+	flagAllowFileReadAll = "allow-file-read-all"
+	flagDenyFileReadAll  = "deny-file-read-all"
 
-	flagAllowFileWrite = "allow-file-write"
-	flagDenyFileWrite  = "deny-file-write"
+	flagAllowFileWrite    = "allow-file-write"
+	flagDenyFileWrite     = "deny-file-write"
+	flagAllowFileWriteAll = "allow-file-write-all"
+	flagDenyFileWriteAll  = "deny-file-write-all"
 
 	flagAllowNetwork    = "allow-network"
 	flagDenyNetwork     = "deny-network"
 	flagAllowNetworkAll = "allow-network-all"
 	flagDenyNetworkAll  = "deny-network-all"
 
-	flagAllowNetworkInbound = "allow-network-inbound"
-	flagDenyNetworkInbound  = "deny-network-inbound"
+	flagAllowNetworkInbound    = "allow-network-inbound"
+	flagDenyNetworkInbound     = "deny-network-inbound"
+	flagAllowNetworkInboundAll = "allow-network-inbound-all"
+	flagDenyNetworkInboundAll  = "deny-network-inbound-all"
 
-	flagAllowNetworkOutbound = "allow-network-outbound"
-	flagDenyNetworkOutbound  = "deny-network-outbound"
+	flagAllowNetworkOutbound    = "allow-network-outbound"
+	flagDenyNetworkOutbound     = "deny-network-outbound"
+	flagAllowNetworkOutboundAll = "allow-network-outbound-all"
+	flagDenyNetworkOutboundAll  = "deny-network-outbound-all"
 
 	flagAllowProcessExec    = "allow-process-exec"
 	flagDenyProcessExec     = "deny-process-exec"
 	flagAllowProcessExecAll = "allow-process-exec-all"
 	flagDenyProcessExecAll  = "deny-process-exec-all"
 
-	flagAllowSysctlRead = "allow-sysctl-read"
-	flagDenySysctlRead  = "deny-sysctl-read"
+	flagAllowSysctlRead    = "allow-sysctl-read"
+	flagDenySysctlRead     = "deny-sysctl-read"
+	flagAllowSysctlReadAll = "allow-sysctl-read-all"
+	flagDenySysctlReadAll  = "deny-sysctl-read-all"
 )
 
 var operationTypeByFlagMap = map[string]sbpl.OperationType{
@@ -51,30 +61,40 @@ var operationTypeByFlagMap = map[string]sbpl.OperationType{
 	flagAllowFileAll: sbpl.OperationTypeFile,
 	flagDenyFileAll:  sbpl.OperationTypeFile,
 
-	flagAllowFileRead: sbpl.OperationTypeFileRead,
-	flagDenyFileRead:  sbpl.OperationTypeFileRead,
+	flagAllowFileRead:    sbpl.OperationTypeFileRead,
+	flagDenyFileRead:     sbpl.OperationTypeFileRead,
+	flagAllowFileReadAll: sbpl.OperationTypeFileRead,
+	flagDenyFileReadAll:  sbpl.OperationTypeFileRead,
 
-	flagAllowFileWrite: sbpl.OperationTypeFileWrite,
-	flagDenyFileWrite:  sbpl.OperationTypeFileWrite,
+	flagAllowFileWrite:    sbpl.OperationTypeFileWrite,
+	flagDenyFileWrite:     sbpl.OperationTypeFileWrite,
+	flagAllowFileWriteAll: sbpl.OperationTypeFileWrite,
+	flagDenyFileWriteAll:  sbpl.OperationTypeFileWrite,
 
 	flagAllowNetwork:    sbpl.OperationTypeNetwork,
 	flagDenyNetwork:     sbpl.OperationTypeNetwork,
 	flagAllowNetworkAll: sbpl.OperationTypeNetwork,
 	flagDenyNetworkAll:  sbpl.OperationTypeNetwork,
 
-	flagAllowNetworkInbound: sbpl.OperationTypeNetworkInbound,
-	flagDenyNetworkInbound:  sbpl.OperationTypeNetworkInbound,
+	flagAllowNetworkInbound:    sbpl.OperationTypeNetworkInbound,
+	flagDenyNetworkInbound:     sbpl.OperationTypeNetworkInbound,
+	flagAllowNetworkInboundAll: sbpl.OperationTypeNetworkInbound,
+	flagDenyNetworkInboundAll:  sbpl.OperationTypeNetworkInbound,
 
-	flagAllowNetworkOutbound: sbpl.OperationTypeNetworkOutbound,
-	flagDenyNetworkOutbound:  sbpl.OperationTypeNetworkOutbound,
+	flagAllowNetworkOutbound:    sbpl.OperationTypeNetworkOutbound,
+	flagDenyNetworkOutbound:     sbpl.OperationTypeNetworkOutbound,
+	flagAllowNetworkOutboundAll: sbpl.OperationTypeNetworkOutbound,
+	flagDenyNetworkOutboundAll:  sbpl.OperationTypeNetworkOutbound,
 
 	flagAllowProcessExec:    sbpl.OperationTypeProcessExec,
 	flagDenyProcessExec:     sbpl.OperationTypeProcessExec,
 	flagAllowProcessExecAll: sbpl.OperationTypeProcessExec,
 	flagDenyProcessExecAll:  sbpl.OperationTypeProcessExec,
 
-	flagAllowSysctlRead: sbpl.OperationTypeSysctlRead,
-	flagDenySysctlRead:  sbpl.OperationTypeSysctlRead,
+	flagAllowSysctlRead:    sbpl.OperationTypeSysctlRead,
+	flagDenySysctlRead:     sbpl.OperationTypeSysctlRead,
+	flagAllowSysctlReadAll: sbpl.OperationTypeSysctlRead,
+	flagDenySysctlReadAll:  sbpl.OperationTypeSysctlRead,
 }
 
 func main() {
@@ -86,9 +106,13 @@ func main() {
 
 		&cli.StringFlag{Name: flagAllowFileRead, Usage: "allow file-read operation"},
 		&cli.StringFlag{Name: flagDenyFileRead, Usage: "deny file-read operation"},
+		&cli.BoolFlag{Name: flagAllowFileReadAll, Usage: "allow all file-read operation"},
+		&cli.BoolFlag{Name: flagDenyFileReadAll, Usage: "deny all file-read operation"},
 
 		&cli.StringFlag{Name: flagAllowFileWrite, Usage: "allow file-write operation"},
 		&cli.StringFlag{Name: flagDenyFileWrite, Usage: "deny file-write operation"},
+		&cli.BoolFlag{Name: flagAllowFileWriteAll, Usage: "allow all file-write operation"},
+		&cli.BoolFlag{Name: flagDenyFileWriteAll, Usage: "deny all file-write operation"},
 
 		&cli.StringFlag{Name: flagAllowNetwork, Usage: "allow network* operation"},
 		&cli.StringFlag{Name: flagDenyNetwork, Usage: "deny network* operation"},
@@ -97,9 +121,13 @@ func main() {
 
 		&cli.StringFlag{Name: flagAllowNetworkInbound, Usage: "allow network-inbound operation"},
 		&cli.StringFlag{Name: flagDenyNetworkInbound, Usage: "deny network-inbound operation"},
+		&cli.BoolFlag{Name: flagAllowNetworkInboundAll, Usage: "allow all network-inbound operation"},
+		&cli.BoolFlag{Name: flagDenyNetworkInboundAll, Usage: "deny all network-inbound operation"},
 
 		&cli.StringFlag{Name: flagAllowNetworkOutbound, Usage: "allow network-outbound operation"},
 		&cli.StringFlag{Name: flagDenyNetworkOutbound, Usage: "deny network-outbound operation"},
+		&cli.BoolFlag{Name: flagAllowNetworkOutboundAll, Usage: "allow all network-outbound operation"},
+		&cli.BoolFlag{Name: flagDenyNetworkOutboundAll, Usage: "deny all network-outbound operation"},
 
 		&cli.StringFlag{Name: flagAllowProcessExec, Usage: "allow process-exec operation"},
 		&cli.StringFlag{Name: flagDenyProcessExec, Usage: "deny process-exec operation"},
@@ -108,7 +136,10 @@ func main() {
 
 		&cli.StringFlag{Name: flagAllowSysctlRead, Usage: "allow sysctl-read operation"},
 		&cli.StringFlag{Name: flagDenySysctlRead, Usage: "deny sysctl-read operation"},
+		&cli.BoolFlag{Name: flagAllowSysctlReadAll, Usage: "allow all sysctl-read operation"},
+		&cli.BoolFlag{Name: flagDenySysctlReadAll, Usage: "deny all sysctl-read operation"},
 	}
+
 	cmd := &cli.Command{
 		Name:  "sbx",
 		Flags: sliceutil.Map(flags, func(flag cli.Flag) cli.Flag { return flag }),
