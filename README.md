@@ -89,21 +89,26 @@ sbx [flags] -- <command> [command-flags] [command-args...]
 
 * Allow read operation for current directory.
 
-```
-$ sbx --allow-file-read="." ls .
+```console
+sbx --allow-file-read . ls .
+# same as above
+sbx --allow-file-read='.' ls .
+
+# with command flags
+sbx --allow-file-read='.' -- ls -l .
 ```
 
 * Allow network operation for `localhost:8080`.
 
-```
-$ sbx --allow-network="localhost:8080" curl http://localhost:8080
+```console
+sbx --allow-network='localhost:8080' curl http://localhost:8080
 ```
 
 * Allow network operation for remote host.
   - Allow read access to the `/opt/local` directory to retrieve CA certificates. (This example uses homebrew-installed `curl`.)
 
-```
-$ sbx --allow-network="*:443" --allow-file-read="/opt/local" curl https://syum.ai/ascii
+```console
+sbx --allow-network='*:443' --allow-file-read='/opt/local' curl https://syum.ai/ascii
 ```
 
 ## License
