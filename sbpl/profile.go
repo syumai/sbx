@@ -23,7 +23,7 @@ type Profile struct {
 func (p *Profile) String() string {
 	body := []string{
 		"(version 1)",
-		`(import "bsd.sb")`,
+		`(import "system.sb")`,
 	}
 	if p.AllowAllOperations {
 		body = append(body, "(allow default)")
