@@ -52,11 +52,6 @@ const (
 	flagDenyProcessExec     = "deny-process-exec"
 	flagAllowProcessExecAll = "allow-process-exec-all"
 	flagDenyProcessExecAll  = "deny-process-exec-all"
-
-	flagAllowSysctlRead    = "allow-sysctl-read"
-	flagDenySysctlRead     = "deny-sysctl-read"
-	flagAllowSysctlReadAll = "allow-sysctl-read-all"
-	flagDenySysctlReadAll  = "deny-sysctl-read-all"
 )
 
 var operationTypeByFlagMap = map[string]sbpl.OperationType{
@@ -94,11 +89,6 @@ var operationTypeByFlagMap = map[string]sbpl.OperationType{
 	flagDenyProcessExec:     sbpl.OperationTypeProcessExec,
 	flagAllowProcessExecAll: sbpl.OperationTypeProcessExec,
 	flagDenyProcessExecAll:  sbpl.OperationTypeProcessExec,
-
-	flagAllowSysctlRead:    sbpl.OperationTypeSysctlRead,
-	flagDenySysctlRead:     sbpl.OperationTypeSysctlRead,
-	flagAllowSysctlReadAll: sbpl.OperationTypeSysctlRead,
-	flagDenySysctlReadAll:  sbpl.OperationTypeSysctlRead,
 }
 
 func main() {
@@ -139,11 +129,6 @@ func main() {
 		&cli.StringFlag{Name: flagDenyProcessExec, Usage: "deny process-exec operation"},
 		&cli.BoolFlag{Name: flagAllowProcessExecAll, Usage: "allow all process-exec operation"},
 		&cli.BoolFlag{Name: flagDenyProcessExecAll, Usage: "deny all process-exec operation"},
-
-		&cli.StringFlag{Name: flagAllowSysctlRead, Usage: "allow sysctl-read operation"},
-		&cli.StringFlag{Name: flagDenySysctlRead, Usage: "deny sysctl-read operation"},
-		&cli.BoolFlag{Name: flagAllowSysctlReadAll, Usage: "allow all sysctl-read operation"},
-		&cli.BoolFlag{Name: flagDenySysctlReadAll, Usage: "deny all sysctl-read operation"},
 	}
 
 	cmd := &cli.Command{

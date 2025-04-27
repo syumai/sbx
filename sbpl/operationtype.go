@@ -14,7 +14,6 @@ const (
 	OperationTypeNetworkOutbound
 	OperationTypeProcessExec
 	OperationTypeProcessExecNoSandbox
-	OperationTypeSysctlRead
 )
 
 func (t OperationType) String() string {
@@ -33,8 +32,6 @@ func (t OperationType) String() string {
 		return "network-outbound"
 	case OperationTypeProcessExec, OperationTypeProcessExecNoSandbox:
 		return "process-exec"
-	case OperationTypeSysctlRead:
-		return "sysctl-read"
 	}
 	panic(fmt.Sprintf("unexpected operation type: %d", t))
 }

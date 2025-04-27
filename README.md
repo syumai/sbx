@@ -5,7 +5,7 @@
 
 ## Features
 
-- Easy allow/deny configuration for common operations (file, network, process, sysctl, etc.)
+- Easy allow/deny configuration for common operations (file, network, process, etc.)
 - Supports both of relative and absolute path filtering.
 
 ## Important Notes
@@ -15,7 +15,8 @@
 
 ## Notes
 
-- This command allows access to dylibs because it's required for process exec.
+- This command implicitly applies `Common system sandbox rules` which is defined in "system.sb".
+- This command also allows access to dylibs because it's required for process exec.
 - When you specify `-network` flag, this command allows access to unix-socket.
 
 ## Installation
@@ -80,12 +81,6 @@ sbx [flags] -- <command> [command-flags] [command-args...]
 - `--deny-process-exec`       Deny process execution
 - `--allow-process-exec-all`  Allow all process execution
 - `--deny-process-exec-all`   Deny all process execution
-
-#### Sysctl Operations
-- `--allow-sysctl-read`       Allow sysctl read
-- `--deny-sysctl-read`        Deny sysctl read
-- `--allow-sysctl-read-all`   Allow all sysctl read
-- `--deny-sysctl-read-all`    Deny all sysctl read
 
 ### Example
 
