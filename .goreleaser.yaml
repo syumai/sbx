@@ -6,8 +6,6 @@ builds:
     main: ./cmd/sbx
     binary: sbx-{{ .Arch }}-{{ .Os }}
     goos:
-      - linux
-      - windows
       - darwin
     goarch:
       - amd64
