@@ -9,11 +9,11 @@ import (
 	"syscall"
 )
 
-func sandboxExec(ctx context.Context, policy string, command string, args ...string) error {
+func sandboxExec(ctx context.Context, profile string, command string, args ...string) error {
 	if command == "" {
 		return errors.New("command is required")
 	}
-	sandboxArgs := []string{"-p", policy, command}
+	sandboxArgs := []string{"-p", profile, command}
 	sandboxArgs = append(sandboxArgs, args...)
 
 	cmd := exec.CommandContext(ctx, "sandbox-exec", sandboxArgs...)

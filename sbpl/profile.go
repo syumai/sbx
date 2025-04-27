@@ -6,21 +6,21 @@ import (
 	"github.com/syumai/sbx/internal/sliceutil"
 )
 
-func NewPolicy(allowAllOperations bool, isNetworkAllowed bool, operations []*Operation) *Policy {
-	return &Policy{
+func NewProfile(allowAllOperations bool, isNetworkAllowed bool, operations []*Operation) *Profile {
+	return &Profile{
 		AllowAllOperations: allowAllOperations,
 		IsNetworkAllowed:   isNetworkAllowed,
 		Operations:         operations,
 	}
 }
 
-type Policy struct {
+type Profile struct {
 	AllowAllOperations bool
 	IsNetworkAllowed   bool
 	Operations         []*Operation
 }
 
-func (p *Policy) String() string {
+func (p *Profile) String() string {
 	body := []string{
 		"(version 1)",
 		`(import "bsd.sb")`,

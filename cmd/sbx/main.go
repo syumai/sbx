@@ -241,8 +241,8 @@ Example:
 					sbpl.NewLiteralPathFilter(commandPath),
 				},
 			})
-			policy := sbpl.NewPolicy(allowAllOperations, isNetworkAllowed, operations).String()
-			return sandboxExec(ctx, policy, commandPath, cmd.Args().Tail()...)
+			profile := sbpl.NewProfile(allowAllOperations, isNetworkAllowed, operations).String()
+			return sandboxExec(ctx, profile, commandPath, cmd.Args().Tail()...)
 		},
 	}
 	if err := cmd.Run(context.Background(), os.Args); err != nil {
